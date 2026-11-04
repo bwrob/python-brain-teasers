@@ -1,0 +1,742 @@
+{
+  "description": "Directed Acyclic Graph (DAG) establishing didactic learning progression for Python Brain Teasers.",
+  "total_teasers": 40,
+  "topological_order": [
+    "01_mul.py",
+    "02_round.py",
+    "03_div.py",
+    "04_pi.py",
+    "05_city.py",
+    "06_escape.py",
+    "07_winpath.py",
+    "08_cat.py",
+    "09_waldo.py",
+    "10_colors.py",
+    "11_identity.py",
+    "12_add.py",
+    "13_assign.py",
+    "14_avengers.py",
+    "15_inside.py",
+    "16_tasks.py",
+    "17_sorted.py",
+    "18_loop.py",
+    "19_loop_internal.py",
+    "20_word_freq.py",
+    "21_word_freq_none.py",
+    "22_scope.py",
+    "23_buttons.py",
+    "24_buttons_default.py",
+    "25_buttons_make.py",
+    "26_player.py",
+    "27_user.py",
+    "28_seeker.py",
+    "29_get_attr.py",
+    "30_timer.py",
+    "31_vote.py",
+    "32_eval.py",
+    "33_future.py",
+    "34_email.py",
+    "35_metrics.py",
+    "36_metrics_nl.py",
+    "37_metrics_box.py",
+    "38_printer.py",
+    "39_printer_join.py",
+    "40_jury.py"
+  ],
+  "nodes": [
+    {
+      "order": 1,
+      "original_name": "mul.py",
+      "renamed_file": "01_mul.py",
+      "concept": "Floating point precision and binary representation (IEEE 754): 1.1 * 1.1 produces 1.2100000000000002 rather than exact 1.21.",
+      "prerequisites": [],
+      "prerequisites_original": [],
+      "dependents": [
+        "02_round.py",
+        "11_identity.py",
+        "12_add.py"
+      ],
+      "dependents_original": [
+        "round.py",
+        "identity.py",
+        "add.py"
+      ]
+    },
+    {
+      "order": 2,
+      "original_name": "round.py",
+      "renamed_file": "02_round.py",
+      "concept": "Banker's rounding (round-half-to-even) in Python 3: round(1.5) and round(2.5) both round to 2.",
+      "prerequisites": [
+        "01_mul.py"
+      ],
+      "prerequisites_original": [
+        "mul.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 3,
+      "original_name": "div.py",
+      "renamed_file": "03_div.py",
+      "concept": "Division operator semantics: true division (/) always yields float in Python 3.",
+      "prerequisites": [],
+      "prerequisites_original": [],
+      "dependents": [
+        "04_pi.py",
+        "30_timer.py",
+        "33_future.py"
+      ],
+      "dependents_original": [
+        "pi.py",
+        "timer.py",
+        "future.py"
+      ]
+    },
+    {
+      "order": 4,
+      "original_name": "pi.py",
+      "renamed_file": "04_pi.py",
+      "concept": "Unicode variable identifiers under PEP 3131 (e.g. \u03c0 = 22 / 7).",
+      "prerequisites": [
+        "03_div.py"
+      ],
+      "prerequisites_original": [
+        "div.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 5,
+      "original_name": "city.py",
+      "renamed_file": "05_city.py",
+      "concept": "Unicode strings and character representation: combining accents vs precomposed characters and len().",
+      "prerequisites": [],
+      "prerequisites_original": [],
+      "dependents": [
+        "06_escape.py"
+      ],
+      "dependents_original": [
+        "escape.py"
+      ]
+    },
+    {
+      "order": 6,
+      "original_name": "escape.py",
+      "renamed_file": "06_escape.py",
+      "concept": "String literal escape sequences: hex (\\x), unicode 16-bit (\\u), 32-bit (\\U), and named character (\\N) escapes.",
+      "prerequisites": [
+        "05_city.py"
+      ],
+      "prerequisites_original": [
+        "city.py"
+      ],
+      "dependents": [
+        "07_winpath.py",
+        "31_vote.py",
+        "34_email.py"
+      ],
+      "dependents_original": [
+        "winpath.py",
+        "vote.py",
+        "email.py"
+      ]
+    },
+    {
+      "order": 7,
+      "original_name": "winpath.py",
+      "renamed_file": "07_winpath.py",
+      "concept": "Raw strings vs backslash escape interpretation: unintended escape sequences in file paths.",
+      "prerequisites": [
+        "06_escape.py"
+      ],
+      "prerequisites_original": [
+        "escape.py"
+      ],
+      "dependents": [
+        "31_vote.py"
+      ],
+      "dependents_original": [
+        "vote.py"
+      ]
+    },
+    {
+      "order": 8,
+      "original_name": "cat.py",
+      "renamed_file": "08_cat.py",
+      "concept": "String slicing with negative step: pali[::-1] creates a reversed copy without mutating original string.",
+      "prerequisites": [],
+      "prerequisites_original": [],
+      "dependents": [
+        "09_waldo.py",
+        "10_colors.py",
+        "12_add.py",
+        "13_assign.py"
+      ],
+      "dependents_original": [
+        "waldo.py",
+        "colors.py",
+        "add.py",
+        "assign.py"
+      ]
+    },
+    {
+      "order": 9,
+      "original_name": "waldo.py",
+      "renamed_file": "09_waldo.py",
+      "concept": "str.find() sentinel return value (-1) when not found, which is truthy in boolean conditions.",
+      "prerequisites": [
+        "08_cat.py"
+      ],
+      "prerequisites_original": [
+        "cat.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 10,
+      "original_name": "colors.py",
+      "renamed_file": "10_colors.py",
+      "concept": "Implicit string literal concatenation: adjacent string literals inside collections without a comma are joined.",
+      "prerequisites": [
+        "08_cat.py"
+      ],
+      "prerequisites_original": [
+        "cat.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 11,
+      "original_name": "identity.py",
+      "renamed_file": "11_identity.py",
+      "concept": "Object identity (is) vs equality (==) and small integer caching / interning in Python.",
+      "prerequisites": [
+        "01_mul.py"
+      ],
+      "prerequisites_original": [
+        "mul.py"
+      ],
+      "dependents": [
+        "16_tasks.py"
+      ],
+      "dependents_original": [
+        "tasks.py"
+      ]
+    },
+    {
+      "order": 12,
+      "original_name": "add.py",
+      "renamed_file": "12_add.py",
+      "concept": "Operator overloading (+ concatenates strings) and non-enforcement of type hints at runtime.",
+      "prerequisites": [
+        "01_mul.py",
+        "08_cat.py"
+      ],
+      "prerequisites_original": [
+        "mul.py",
+        "cat.py"
+      ],
+      "dependents": [
+        "20_word_freq.py",
+        "22_scope.py",
+        "35_metrics.py"
+      ],
+      "dependents_original": [
+        "word_freq.py",
+        "scope.py",
+        "metrics.py"
+      ]
+    },
+    {
+      "order": 13,
+      "original_name": "assign.py",
+      "renamed_file": "13_assign.py",
+      "concept": "List slice assignment: replacing slice with elements of an iterable, dynamically changing sequence length.",
+      "prerequisites": [
+        "08_cat.py"
+      ],
+      "prerequisites_original": [
+        "cat.py"
+      ],
+      "dependents": [
+        "14_avengers.py",
+        "15_inside.py",
+        "17_sorted.py",
+        "26_player.py",
+        "32_eval.py",
+        "37_metrics_box.py"
+      ],
+      "dependents_original": [
+        "avengers.py",
+        "inside.py",
+        "sorted.py",
+        "player.py",
+        "eval.py",
+        "metrics_box.py"
+      ]
+    },
+    {
+      "order": 14,
+      "original_name": "avengers.py",
+      "renamed_file": "14_avengers.py",
+      "concept": "Simultaneous assignment evaluation order: right-hand side is evaluated fully before assignments to left-hand targets.",
+      "prerequisites": [
+        "13_assign.py"
+      ],
+      "prerequisites_original": [
+        "assign.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 15,
+      "original_name": "inside.py",
+      "renamed_file": "15_inside.py",
+      "concept": "In-place augmented assignment: items += range(n) invokes __iadd__ to mutate the existing list in place.",
+      "prerequisites": [
+        "13_assign.py"
+      ],
+      "prerequisites_original": [
+        "assign.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 16,
+      "original_name": "tasks.py",
+      "renamed_file": "16_tasks.py",
+      "concept": "Tuple comparison in priority queues (heapq): comparing subsequent elements on tie-break raises TypeError if types are unorderable.",
+      "prerequisites": [
+        "11_identity.py"
+      ],
+      "prerequisites_original": [
+        "identity.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 17,
+      "original_name": "sorted.py",
+      "renamed_file": "17_sorted.py",
+      "concept": "Iterator consumption: reversed() returns an iterator that is exhausted after the first traversal.",
+      "prerequisites": [
+        "13_assign.py"
+      ],
+      "prerequisites_original": [
+        "assign.py"
+      ],
+      "dependents": [
+        "18_loop.py"
+      ],
+      "dependents_original": [
+        "loop.py"
+      ]
+    },
+    {
+      "order": 18,
+      "original_name": "loop.py",
+      "renamed_file": "18_loop.py",
+      "concept": "For-loop iteration binding: reassigning the target variable inside the loop body does not alter subsequent iterations.",
+      "prerequisites": [
+        "17_sorted.py"
+      ],
+      "prerequisites_original": [
+        "sorted.py"
+      ],
+      "dependents": [
+        "19_loop_internal.py",
+        "23_buttons.py",
+        "38_printer.py"
+      ],
+      "dependents_original": [
+        "loop_internal.py",
+        "buttons.py",
+        "printer.py"
+      ]
+    },
+    {
+      "order": 19,
+      "original_name": "loop_internal.py",
+      "renamed_file": "19_loop_internal.py",
+      "concept": "Python iteration protocol mechanics: explicit while loop using iter(), next(), and catching StopIteration.",
+      "prerequisites": [
+        "18_loop.py"
+      ],
+      "prerequisites_original": [
+        "loop.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 20,
+      "original_name": "word_freq.py",
+      "renamed_file": "20_word_freq.py",
+      "concept": "Mutable default argument gotcha: default values are evaluated once at function definition time, accumulating state.",
+      "prerequisites": [
+        "12_add.py"
+      ],
+      "prerequisites_original": [
+        "add.py"
+      ],
+      "dependents": [
+        "21_word_freq_none.py"
+      ],
+      "dependents_original": [
+        "word_freq_none.py"
+      ]
+    },
+    {
+      "order": 21,
+      "original_name": "word_freq_none.py",
+      "renamed_file": "21_word_freq_none.py",
+      "concept": "Idiomatic default argument fix: using None as a sentinel value to instantiate fresh mutable objects inside the body.",
+      "prerequisites": [
+        "20_word_freq.py"
+      ],
+      "prerequisites_original": [
+        "word_freq.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 22,
+      "original_name": "scope.py",
+      "renamed_file": "22_scope.py",
+      "concept": "Lexical scoping and closures: inner functions retaining access to variables in enclosing scopes (LEGB rule).",
+      "prerequisites": [
+        "12_add.py"
+      ],
+      "prerequisites_original": [
+        "add.py"
+      ],
+      "dependents": [
+        "23_buttons.py",
+        "25_buttons_make.py",
+        "26_player.py",
+        "35_metrics.py"
+      ],
+      "dependents_original": [
+        "buttons.py",
+        "buttons_make.py",
+        "player.py",
+        "metrics.py"
+      ]
+    },
+    {
+      "order": 23,
+      "original_name": "buttons.py",
+      "renamed_file": "23_buttons.py",
+      "concept": "Late binding of closures in loops: functions created in loops capture variable references, evaluating the final loop value.",
+      "prerequisites": [
+        "18_loop.py",
+        "22_scope.py"
+      ],
+      "prerequisites_original": [
+        "loop.py",
+        "scope.py"
+      ],
+      "dependents": [
+        "24_buttons_default.py",
+        "25_buttons_make.py"
+      ],
+      "dependents_original": [
+        "buttons_default.py",
+        "buttons_make.py"
+      ]
+    },
+    {
+      "order": 24,
+      "original_name": "buttons_default.py",
+      "renamed_file": "24_buttons_default.py",
+      "concept": "Solving late-binding closures via default argument binding: lambda n=n captures the loop variable's current value.",
+      "prerequisites": [
+        "23_buttons.py"
+      ],
+      "prerequisites_original": [
+        "buttons.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 25,
+      "original_name": "buttons_make.py",
+      "renamed_file": "25_buttons_make.py",
+      "concept": "Solving late-binding closures via factory function: each call creates a new local scope isolating the variable.",
+      "prerequisites": [
+        "22_scope.py",
+        "23_buttons.py"
+      ],
+      "prerequisites_original": [
+        "scope.py",
+        "buttons.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 26,
+      "original_name": "player.py",
+      "renamed_file": "26_player.py",
+      "concept": "Class attributes vs instance attributes: self.count += 1 creates an instance attribute shadowing the class attribute.",
+      "prerequisites": [
+        "13_assign.py",
+        "22_scope.py"
+      ],
+      "prerequisites_original": [
+        "assign.py",
+        "scope.py"
+      ],
+      "dependents": [
+        "27_user.py",
+        "29_get_attr.py",
+        "30_timer.py",
+        "40_jury.py"
+      ],
+      "dependents_original": [
+        "user.py",
+        "get_attr.py",
+        "timer.py",
+        "jury.py"
+      ]
+    },
+    {
+      "order": 27,
+      "original_name": "user.py",
+      "renamed_file": "27_user.py",
+      "concept": "Private attribute name mangling: double underscore prefix (__id) mangles the name to _ClassName__id to avoid collisions.",
+      "prerequisites": [
+        "26_player.py"
+      ],
+      "prerequisites_original": [
+        "player.py"
+      ],
+      "dependents": [
+        "28_seeker.py"
+      ],
+      "dependents_original": [
+        "seeker.py"
+      ]
+    },
+    {
+      "order": 28,
+      "original_name": "seeker.py",
+      "renamed_file": "28_seeker.py",
+      "concept": "Unconditional attribute intercept (__getattribute__): accessing self.__dict__ inside triggers infinite recursion.",
+      "prerequisites": [
+        "27_user.py"
+      ],
+      "prerequisites_original": [
+        "user.py"
+      ],
+      "dependents": [
+        "29_get_attr.py"
+      ],
+      "dependents_original": [
+        "get_attr.py"
+      ]
+    },
+    {
+      "order": 29,
+      "original_name": "get_attr.py",
+      "renamed_file": "29_get_attr.py",
+      "concept": "Full Python attribute lookup mechanics: emulating resolution across instance dict, class dict, and class MRO.",
+      "prerequisites": [
+        "26_player.py",
+        "28_seeker.py"
+      ],
+      "prerequisites_original": [
+        "player.py",
+        "seeker.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 30,
+      "original_name": "timer.py",
+      "renamed_file": "30_timer.py",
+      "concept": "Context manager protocol (__enter__, __exit__): returning True from __exit__ suppresses exceptions inside the block.",
+      "prerequisites": [
+        "03_div.py",
+        "26_player.py"
+      ],
+      "prerequisites_original": [
+        "div.py",
+        "player.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 31,
+      "original_name": "vote.py",
+      "renamed_file": "31_vote.py",
+      "concept": "Regular expressions and greedy quantifiers: re.search with .* greedily consumes characters, leaving minimal digits for later groups.",
+      "prerequisites": [
+        "06_escape.py",
+        "07_winpath.py"
+      ],
+      "prerequisites_original": [
+        "escape.py",
+        "winpath.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 32,
+      "original_name": "eval.py",
+      "renamed_file": "32_eval.py",
+      "concept": "eval() limitations: accepts expressions and returns their value, but raises SyntaxError when given statements like assignment.",
+      "prerequisites": [
+        "13_assign.py"
+      ],
+      "prerequisites_original": [
+        "assign.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 33,
+      "original_name": "future.py",
+      "renamed_file": "33_future.py",
+      "concept": "Standard library constraints: datetime.datetime year bounds require 1 <= year <= 9999; numeric literal underscores.",
+      "prerequisites": [
+        "03_div.py"
+      ],
+      "prerequisites_original": [
+        "div.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 34,
+      "original_name": "email.py",
+      "renamed_file": "34_email.py",
+      "concept": "Module namespace shadowing: naming a local script after a standard library package interferes with imports from that package.",
+      "prerequisites": [
+        "06_escape.py"
+      ],
+      "prerequisites_original": [
+        "escape.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 35,
+      "original_name": "metrics.py",
+      "renamed_file": "35_metrics.py",
+      "concept": "Decorators and closure variable modification: rebinding ncalls += 1 creates a local variable, causing UnboundLocalError.",
+      "prerequisites": [
+        "12_add.py",
+        "22_scope.py"
+      ],
+      "prerequisites_original": [
+        "add.py",
+        "scope.py"
+      ],
+      "dependents": [
+        "36_metrics_nl.py",
+        "37_metrics_box.py"
+      ],
+      "dependents_original": [
+        "metrics_nl.py",
+        "metrics_box.py"
+      ]
+    },
+    {
+      "order": 36,
+      "original_name": "metrics_nl.py",
+      "renamed_file": "36_metrics_nl.py",
+      "concept": "Modifying closure state using nonlocal: explicitly declaring nonlocal allows modifying enclosing scope variables.",
+      "prerequisites": [
+        "35_metrics.py"
+      ],
+      "prerequisites_original": [
+        "metrics.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 37,
+      "original_name": "metrics_box.py",
+      "renamed_file": "37_metrics_box.py",
+      "concept": "Modifying closure state via mutable container: mutating a container element (ncalls[0] += 1) without rebinding the variable name.",
+      "prerequisites": [
+        "13_assign.py",
+        "35_metrics.py"
+      ],
+      "prerequisites_original": [
+        "assign.py",
+        "metrics.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 38,
+      "original_name": "printer.py",
+      "renamed_file": "38_printer.py",
+      "concept": "Daemon thread lifecycle: daemon threads terminate immediately when the main thread exits.",
+      "prerequisites": [
+        "18_loop.py"
+      ],
+      "prerequisites_original": [
+        "loop.py"
+      ],
+      "dependents": [
+        "39_printer_join.py",
+        "40_jury.py"
+      ],
+      "dependents_original": [
+        "printer_join.py",
+        "jury.py"
+      ]
+    },
+    {
+      "order": 39,
+      "original_name": "printer_join.py",
+      "renamed_file": "39_printer_join.py",
+      "concept": "Thread synchronization: thread.join() blocks the calling thread until the target thread finishes execution.",
+      "prerequisites": [
+        "38_printer.py"
+      ],
+      "prerequisites_original": [
+        "printer.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    },
+    {
+      "order": 40,
+      "original_name": "jury.py",
+      "renamed_file": "40_jury.py",
+      "concept": "Multiprocessing vs multithreading: ProcessPoolExecutor workers run in isolated address spaces, not sharing global state.",
+      "prerequisites": [
+        "26_player.py",
+        "38_printer.py"
+      ],
+      "prerequisites_original": [
+        "player.py",
+        "printer.py"
+      ],
+      "dependents": [],
+      "dependents_original": []
+    }
+  ]
+}

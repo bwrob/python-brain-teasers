@@ -25,5 +25,6 @@ target-version = "py312"
             "assert",
             "D",
             "DOC",
+            "invalid-module-name",
             "print",
         ]
