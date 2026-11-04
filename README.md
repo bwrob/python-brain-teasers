@@ -139,48 +139,48 @@ flowchart LR
 
 ## Teasers List
 
-| # | File | Concept | Depends On |
-|---|------|---------|------------|
-| 01 | [`01_mul.py`](teasers/01_mul.py) | Float binary precision (`1.1 * 1.1`) | - |
-| 02 | [`02_round.py`](teasers/02_round.py) | Banker's rounding (`round(1.5)` vs `round(2.5)`) | `01_mul.py` |
-| 03 | [`03_div.py`](teasers/03_div.py) | True division operator returns float | - |
-| 04 | [`04_pi.py`](teasers/04_pi.py) | Unicode variable names (`π = 22 / 7`) | `03_div.py` |
-| 05 | [`05_city.py`](teasers/05_city.py) | Unicode string length and accents | - |
-| 06 | [`06_escape.py`](teasers/06_escape.py) | String escape codes (`\x`, `\u`, `\U`, `\N`) | `05_city.py` |
-| 07 | [`07_winpath.py`](teasers/07_winpath.py) | Windows paths and escape characters | `06_escape.py` |
-| 08 | [`08_cat.py`](teasers/08_cat.py) | Negative slice step (`[::-1]`) | - |
-| 09 | [`09_waldo.py`](teasers/09_waldo.py) | `str.find()` returns `-1` on miss (truthy) | `08_cat.py` |
-| 10 | [`10_colors.py`](teasers/10_colors.py) | Missing comma merges adjacent strings | `08_cat.py` |
-| 11 | [`11_identity.py`](teasers/11_identity.py) | `is` vs `==` and small integer caching | `01_mul.py` |
-| 12 | [`12_add.py`](teasers/12_add.py) | String addition and type hints ignored at runtime | `01_mul.py`, `08_cat.py` |
-| 13 | [`13_assign.py`](teasers/13_assign.py) | Slice assignment changes list length | `08_cat.py` |
-| 14 | [`14_avengers.py`](teasers/14_avengers.py) | Multiple assignment evaluation order | `13_assign.py` |
-| 15 | [`15_inside.py`](teasers/15_inside.py) | `+=` mutates list in-place | `13_assign.py` |
-| 16 | [`16_tasks.py`](teasers/16_tasks.py) | Tuple comparisons in `heapq` | `11_identity.py` |
-| 17 | [`17_sorted.py`](teasers/17_sorted.py) | Iterators run out after one pass | `13_assign.py` |
-| 18 | [`18_loop.py`](teasers/18_loop.py) | Reassigning loop variable inside for-loop | `17_sorted.py` |
-| 19 | [`19_loop_internal.py`](teasers/19_loop_internal.py) | How for-loops work (`iter()`, `next()`, `StopIteration`) | `18_loop.py` |
-| 20 | [`20_word_freq.py`](teasers/20_word_freq.py) | Mutable default argument bug | `12_add.py` |
-| 21 | [`21_word_freq_none.py`](teasers/21_word_freq_none.py) | Default argument fix using `None` | `20_word_freq.py` |
-| 22 | [`22_scope.py`](teasers/22_scope.py) | Closures and enclosing scopes (LEGB) | `12_add.py` |
-| 23 | [`23_buttons.py`](teasers/23_buttons.py) | Late binding in closures inside loops | `18_loop.py`, `22_scope.py` |
-| 24 | [`24_buttons_default.py`](teasers/24_buttons_default.py) | Fixing late binding with default arguments | `23_buttons.py` |
-| 25 | [`25_buttons_make.py`](teasers/25_buttons_make.py) | Fixing late binding with a helper function | `22_scope.py`, `23_buttons.py` |
-| 26 | [`26_player.py`](teasers/26_player.py) | Class variables vs instance variables | `13_assign.py`, `22_scope.py` |
-| 27 | [`27_user.py`](teasers/27_user.py) | Private name mangling (`__id`) | `26_player.py` |
-| 28 | [`28_seeker.py`](teasers/28_seeker.py) | `__getattribute__` and infinite recursion | `27_user.py` |
-| 29 | [`29_get_attr.py`](teasers/29_get_attr.py) | Attribute lookup: instance, class, and MRO | `26_player.py`, `28_seeker.py` |
-| 30 | [`30_timer.py`](teasers/30_timer.py) | Context managers and exception suppression | `03_div.py`, `26_player.py` |
-| 31 | [`31_vote.py`](teasers/31_vote.py) | Regular expressions and greedy `.*` matching | `06_escape.py`, `07_winpath.py` |
-| 32 | [`32_eval.py`](teasers/32_eval.py) | `eval()` runs expressions, fails on statements | `13_assign.py` |
-| 33 | [`33_future.py`](teasers/33_future.py) | `datetime` year limit (1 to 9999) | `03_div.py` |
-| 34 | [`34_email.py`](teasers/34_email.py) | Script name shadowing standard library module | `06_escape.py` |
-| 35 | [`35_metrics.py`](teasers/35_metrics.py) | Modifying closure variable causes `UnboundLocalError` | `12_add.py`, `22_scope.py` |
-| 36 | [`36_metrics_nl.py`](teasers/36_metrics_nl.py) | Fixing closure modification with `nonlocal` | `35_metrics.py` |
-| 37 | [`37_metrics_box.py`](teasers/37_metrics_box.py) | Fixing closure modification with a mutable list | `13_assign.py`, `35_metrics.py` |
-| 38 | [`38_printer.py`](teasers/38_printer.py) | Daemon threads stop when main program exits | `18_loop.py` |
-| 39 | [`39_printer_join.py`](teasers/39_printer_join.py) | Waiting for threads with `join()` | `38_printer.py` |
-| 40 | [`40_jury.py`](teasers/40_jury.py) | Separate memory space in multiprocessing | `26_player.py`, `38_printer.py` |
+| # | File | Topic | Depends On |
+|---|------|-------|------------|
+| 01 | [`01_mul.py`](teasers/01_mul.py) | Floating point arithmetic | - |
+| 02 | [`02_round.py`](teasers/02_round.py) | Rounding behavior | `01_mul.py` |
+| 03 | [`03_div.py`](teasers/03_div.py) | Division semantics | - |
+| 04 | [`04_pi.py`](teasers/04_pi.py) | Unicode variable identifiers | `03_div.py` |
+| 05 | [`05_city.py`](teasers/05_city.py) | Unicode strings and character counting | - |
+| 06 | [`06_escape.py`](teasers/06_escape.py) | String escape sequences | `05_city.py` |
+| 07 | [`07_winpath.py`](teasers/07_winpath.py) | Backslashes in string literals | `06_escape.py` |
+| 08 | [`08_cat.py`](teasers/08_cat.py) | String slicing with steps | - |
+| 09 | [`09_waldo.py`](teasers/09_waldo.py) | Substring search and truthiness | `08_cat.py` |
+| 10 | [`10_colors.py`](teasers/10_colors.py) | String literals in collections | `08_cat.py` |
+| 11 | [`11_identity.py`](teasers/11_identity.py) | Object identity vs equality | `01_mul.py` |
+| 12 | [`12_add.py`](teasers/12_add.py) | Operator behaviors and type annotations | `01_mul.py`, `08_cat.py` |
+| 13 | [`13_assign.py`](teasers/13_assign.py) | List slice assignment | `08_cat.py` |
+| 14 | [`14_avengers.py`](teasers/14_avengers.py) | Multiple assignment evaluation | `13_assign.py` |
+| 15 | [`15_inside.py`](teasers/15_inside.py) | Augmented assignment with lists | `13_assign.py` |
+| 16 | [`16_tasks.py`](teasers/16_tasks.py) | Tuple ordering in priority queues | `11_identity.py` |
+| 17 | [`17_sorted.py`](teasers/17_sorted.py) | Iterators and sorting | `13_assign.py` |
+| 18 | [`18_loop.py`](teasers/18_loop.py) | For-loop target variable binding | `17_sorted.py` |
+| 19 | [`19_loop_internal.py`](teasers/19_loop_internal.py) | Iteration protocol mechanics | `18_loop.py` |
+| 20 | [`20_word_freq.py`](teasers/20_word_freq.py) | Function default arguments | `12_add.py` |
+| 21 | [`21_word_freq_none.py`](teasers/21_word_freq_none.py) | Alternative default argument patterns | `20_word_freq.py` |
+| 22 | [`22_scope.py`](teasers/22_scope.py) | Lexical scope and nested functions | `12_add.py` |
+| 23 | [`23_buttons.py`](teasers/23_buttons.py) | Closures in loops | `18_loop.py`, `22_scope.py` |
+| 24 | [`24_buttons_default.py`](teasers/24_buttons_default.py) | Binding closure values with defaults | `23_buttons.py` |
+| 25 | [`25_buttons_make.py`](teasers/25_buttons_make.py) | Binding closure values with helper functions | `22_scope.py`, `23_buttons.py` |
+| 26 | [`26_player.py`](teasers/26_player.py) | Class vs instance attributes | `13_assign.py`, `22_scope.py` |
+| 27 | [`27_user.py`](teasers/27_user.py) | Attribute naming conventions and access | `26_player.py` |
+| 28 | [`28_seeker.py`](teasers/28_seeker.py) | Attribute access intercept methods | `27_user.py` |
+| 29 | [`29_get_attr.py`](teasers/29_get_attr.py) | Attribute lookup order | `26_player.py`, `28_seeker.py` |
+| 30 | [`30_timer.py`](teasers/30_timer.py) | Context managers and exception handling | `03_div.py`, `26_player.py` |
+| 31 | [`31_vote.py`](teasers/31_vote.py) | Regular expression matching | `06_escape.py`, `07_winpath.py` |
+| 32 | [`32_eval.py`](teasers/32_eval.py) | Dynamic code evaluation with eval() | `13_assign.py` |
+| 33 | [`33_future.py`](teasers/33_future.py) | Date and time boundaries | `03_div.py` |
+| 34 | [`34_email.py`](teasers/34_email.py) | Module naming and imports | `06_escape.py` |
+| 35 | [`35_metrics.py`](teasers/35_metrics.py) | Decorators and variable scope | `12_add.py`, `22_scope.py` |
+| 36 | [`36_metrics_nl.py`](teasers/36_metrics_nl.py) | Rebinding variables with nonlocal | `35_metrics.py` |
+| 37 | [`37_metrics_box.py`](teasers/37_metrics_box.py) | Container state across scopes | `13_assign.py`, `35_metrics.py` |
+| 38 | [`38_printer.py`](teasers/38_printer.py) | Thread execution and lifecycle | `18_loop.py` |
+| 39 | [`39_printer_join.py`](teasers/39_printer_join.py) | Thread synchronization | `38_printer.py` |
+| 40 | [`40_jury.py`](teasers/40_jury.py) | Multiprocessing and global variables | `26_player.py`, `38_printer.py` |
 
 ---
 
