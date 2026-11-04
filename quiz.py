@@ -431,6 +431,30 @@ def _filter_teasers(
     return active
 
 
+def _wait_for_next(*, is_last: bool) -> bool:
+    """Prompt user to advance to the next puzzle or scorecard, then clear screen.
+
+    Args:
+        is_last: Whether the current puzzle is the last one in the session.
+
+    Returns:
+        True if the user pressed Enter to continue, False if interrupted.
+
+    """
+    prompt = (
+        "[dim]Press Enter to view final scorecard...[/dim]"
+        if is_last
+        else "[dim]Press Enter for next puzzle...[/dim]"
+    )
+    try:
+        Prompt.ask(prompt, default="", show_default=False)
+        CONSOLE.clear()
+    except (KeyboardInterrupt, EOFError):
+        return False
+    else:
+        return True
+
+
 def run_quiz(
     teasers: list[TeaserItem],
     *,
@@ -490,7 +514,7 @@ def run_quiz(
 
         cleaned_input = user_input.strip()
         if cleaned_input.lower() in {"q", "quit", "exit"}:
-            CONSOLE.print("[yellow]Quitting quiz...[/yellow]")
+            CONSOLE.clear()
             break
 
         res, is_correct = _evaluate_attempt(teaser, cleaned_input)
@@ -498,15 +522,8 @@ def run_quiz(
             score += 1
         results.append(res)
 
-        if idx < total:
-            try:
-                Prompt.ask(
-                    "[dim]Press Enter for next puzzle...[/dim]",
-                    default="",
-                    show_default=False,
-                )
-            except (KeyboardInterrupt, EOFError):
-                break
+        if not _wait_for_next(is_last=(idx == total)):
+            break
 
     display_scorecard(results, total_available=total)
 
