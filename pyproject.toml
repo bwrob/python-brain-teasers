@@ -1,10 +1,11 @@
 [project]
 name = "python-brain-teasers"
 version = "0.1.0"
-description = "Add your description here"
+description = "Curated Python brain teasers with an interactive terminal quiz"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "pyrefly>=1.4.0",
+    "rich>=15.0.0",
     "ruff>=0.17.3",
 ]

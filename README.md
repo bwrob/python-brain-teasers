@@ -8,7 +8,25 @@ The files are sorted in learning order using a directed acyclic graph (DAG) save
 
 ## Quickstart
 
-Run any teaser directly with [uv](https://docs.astral.sh/uv/):
+### Interactive Terminal Quiz
+
+Test your Python intuition with an interactive terminal quiz. It shows snippets one by one, fuzzy-matches your answers against runtime output, and tallies your final score:
+
+```bash
+# Run all teasers in learning order
+uv run quiz.py
+
+# Start from a specific puzzle or run just one
+uv run quiz.py --start 10
+uv run quiz.py --teaser 23
+
+# Shuffle for flashcard practice
+uv run quiz.py --random
+```
+
+### Run Snippets Directly
+
+Run any teaser with [uv](https://docs.astral.sh/uv/):
 
 ```bash
 uv run python teasers/01_mul.py

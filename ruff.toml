@@ -28,3 +28,7 @@ target-version = "py312"
             "invalid-module-name",
             "print",
         ]
+        "quiz.py" = [
+            "subprocess-without-shell-equals-true",
+            "suspicious-subprocess-import",
+        ]
