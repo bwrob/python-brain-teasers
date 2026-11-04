@@ -10,7 +10,9 @@ The files are sorted in learning order using a directed acyclic graph (DAG) save
 
 ### Interactive Terminal Quiz
 
-Test your Python intuition with an interactive terminal quiz. It shows snippets one by one, fuzzy-matches your answers against runtime output, and tallies your final score:
+Test your Python intuition with an interactive terminal quiz. It shows snippets one by one, fuzzy-matches your answers against runtime output, and tallies your final score.
+
+For a fair game, the only reference to use is the official [Python documentation](https://docs.python.org/3/).
 
 ```bash
 # Run all teasers in learning order

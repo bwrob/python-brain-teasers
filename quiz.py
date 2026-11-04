@@ -463,7 +463,9 @@ def run_quiz(
     CONSOLE.clear()
     banner_desc = (
         "[dim]Predict what each snippet will print or raise. "
-        "Spaces, quotes, and case are fuzzy-matched.[/dim]"
+        "Spaces, quotes, and case are fuzzy-matched.\n"
+        "Fair game rule: the only reference to use is the official "
+        "[link=https://docs.python.org/3/]Python documentation[/link].[/dim]"
     )
     CONSOLE.print(
         Panel(
