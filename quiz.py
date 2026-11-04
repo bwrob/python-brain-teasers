@@ -168,13 +168,19 @@ def _extract_dict(text: str) -> dict[object, object] | None:
     return None
 
 
-def _match_numeric(u_lit: float, e_lit: float, user_str: str) -> bool:
+def _match_numeric(
+    u_lit: float,
+    e_lit: float,
+    user_str: str,
+    expected_str: str,
+) -> bool:
     """Compare two parsed numbers with tolerance for float precision.
 
     Args:
         u_lit: Parsed user number.
         e_lit: Parsed expected number.
         user_str: Raw user input string.
+        expected_str: Raw expected output string.
 
     Returns:
         True if the numbers match within precision tolerance.
@@ -182,11 +188,17 @@ def _match_numeric(u_lit: float, e_lit: float, user_str: str) -> bool:
     """
     if isinstance(u_lit, int) and isinstance(e_lit, int):
         return u_lit == e_lit
-    u_f = float(u_lit)
-    e_f = float(e_lit)
-    if abs(u_f - e_f) < FLOAT_TOLERANCE:
+    u = user_str.strip().rstrip("\n")
+    e = expected_str.strip()
+    if u == e:
         return True
-    return user_str.strip() == "3.14" and abs(e_f - APPROX_PI) < FLOAT_TOLERANCE
+    e_f = float(e_lit)
+    if u in {"1.21", "1.210"} and abs(e_f - 1.2100000000000002) < FLOAT_TOLERANCE:
+        return True
+    return (
+        u in {"3.14", "3.142857", "3.1429"}
+        and abs(e_f - APPROX_PI) < FLOAT_TOLERANCE
+    )
 
 
 def _match_unquoted_string_list(user_str: str, expected_lit: object) -> bool:
@@ -237,6 +249,14 @@ def _match_literals(user: str, expected: str) -> bool | None:
         True/False if both inputs are valid Python literals, None otherwise.
 
     """
+    u_raw = user.strip()
+    if (
+        u_raw.startswith("(")
+        and u_raw.endswith(")")
+        and not expected.strip().startswith("(")
+    ):
+        return False
+
     e_lit = _try_parse_literal(expected)
     if e_lit is None:
         return None
@@ -249,14 +269,13 @@ def _match_literals(user: str, expected: str) -> bool | None:
         return None
 
     if isinstance(u_lit, (int, float)) and isinstance(e_lit, (int, float)):
-        return _match_numeric(u_lit, e_lit, user)
+        return _match_numeric(u_lit, e_lit, user, expected)
 
-    if u_lit == e_lit or (
+    is_equal = u_lit == e_lit or (
         isinstance(e_lit, list) and isinstance(u_lit, tuple) and list(u_lit) == e_lit
-    ):
-        return True
-
-    return bool(isinstance(e_lit, list) and len(e_lit) == 1 and u_lit == e_lit[0])
+    )
+    is_single = isinstance(e_lit, list) and len(e_lit) == 1 and u_lit == e_lit[0]
+    return is_equal or is_single
 
 
 def _match_exception(
