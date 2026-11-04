@@ -43,6 +43,9 @@ uv run python teasers/23_buttons.py
 Run checks:
 
 ```bash
+# Tests
+uv run pytest
+
 # Linting
 uv run ruff check
 

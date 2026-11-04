@@ -32,3 +32,9 @@ target-version = "py312"
             "subprocess-without-shell-equals-true",
             "suspicious-subprocess-import",
         ]
+        "tests/*" = [
+            "assert",
+            "D",
+            "DOC",
+            "magic-value-comparison",
+        ]
