@@ -266,6 +266,20 @@ def execute_teaser(
     return proc.returncode, stdout, exc_name, error_line
 
 
+def launch_ipython(teaser_path: Path) -> None:
+    """Launch interactive IPython terminal with the teaser script pre-executed.
+
+    Args:
+        teaser_path: File system path to the teaser script.
+
+    """
+    cmd = [sys.executable, "-m", "IPython", "-i", str(teaser_path)]
+    try:
+        subprocess.run(cmd, cwd=ROOT_DIR, check=False)
+    except (subprocess.SubprocessError, FileNotFoundError):
+        CONSOLE.print("[bold red]Failed to launch IPython terminal.[/bold red]")
+
+
 def load_teasers() -> list[TeaserItem]:
     """Load teaser metadata from dag.json.
 
@@ -461,6 +475,7 @@ def run_quiz(
     start_index: int = 0,
     single_teaser: int | None = None,
     shuffle: bool = False,
+    no_ipython: bool = False,
 ) -> None:
     """Run interactive quiz session.
 
@@ -469,6 +484,7 @@ def run_quiz(
         start_index: Starting puzzle number (1-40).
         single_teaser: Optional single puzzle number to run.
         shuffle: Whether to randomize puzzle order.
+        no_ipython: Whether to disable launching IPython on failed attempts.
 
     """
     active_teasers = _filter_teasers(
@@ -520,6 +536,17 @@ def run_quiz(
         res, is_correct = _evaluate_attempt(teaser, cleaned_input)
         if is_correct:
             score += 1
+        elif res.status == "incorrect" and not no_ipython:
+            CONSOLE.print()
+            launch_msg = (
+                "[bold cyan]Opening IPython terminal to inspect this puzzle..."
+                "[/bold cyan]\n"
+                "[dim]Code is pre-executed. Explore variables, then type "
+                "'exit' or Ctrl+D to return.[/dim]\n"
+            )
+            CONSOLE.print(launch_msg)
+            launch_ipython(teaser.code_path)
+
         results.append(res)
 
         if not _wait_for_next(is_last=(idx == total)):
@@ -629,6 +656,11 @@ def main() -> None:
         action="store_true",
         help="Shuffle puzzles for random flashcard practice.",
     )
+    parser.add_argument(
+        "--no-ipython",
+        action="store_true",
+        help="Do not launch IPython terminal on failed attempts.",
+    )
     args = parser.parse_args()
 
     teasers = load_teasers()
@@ -637,6 +669,7 @@ def main() -> None:
         start_index=args.start,
         single_teaser=args.teaser,
         shuffle=args.random,
+        no_ipython=args.no_ipython,
     )
 
 

@@ -12,6 +12,8 @@ The files are sorted in learning order using a directed acyclic graph (DAG) save
 
 Test your Python intuition with an interactive terminal quiz. It shows snippets one by one, fuzzy-matches your answers against runtime output, and tallies your final score.
 
+On any failed attempt, an interactive IPython terminal opens automatically with the teaser's code pre-executed so you can inspect variables and explore behavior. Type `exit` or press `Ctrl+D` to return to the quiz.
+
 For a fair game, the only reference to use is the official [Python documentation](https://docs.python.org/3/).
 
 ```bash
@@ -24,6 +26,9 @@ uv run quiz.py --teaser 23
 
 # Shuffle for flashcard practice
 uv run quiz.py --random
+
+# Disable launching IPython on failed attempts
+uv run quiz.py --no-ipython
 ```
 
 ### Run Snippets Directly
