@@ -189,6 +189,43 @@ def _match_numeric(u_lit: float, e_lit: float, user_str: str) -> bool:
     return user_str.strip() == "3.14" and abs(e_f - APPROX_PI) < FLOAT_TOLERANCE
 
 
+def _match_unquoted_string_list(user_str: str, expected_lit: object) -> bool:
+    """Match user answer against expected list of strings when quotes are omitted.
+
+    Args:
+        user_str: User's raw input string.
+        expected_lit: Parsed expected literal object.
+
+    Returns:
+        True if user input matches the expected list of strings without quotes.
+
+    """
+    if not (
+        isinstance(expected_lit, list)
+        and all(isinstance(x, str) for x in expected_lit)
+    ):
+        return False
+
+    u = user_str.strip()
+    if u.startswith("[") and u.endswith("]"):
+        u = u[1:-1].strip()
+
+    if "[" in u or "]" in u or "(" in u or ")" in u:
+        return False
+
+    if "," in u:
+        u_items = [
+            item.strip().strip("'\"").lower()
+            for item in u.split(",")
+            if item.strip()
+        ]
+    else:
+        u_items = [item.strip("'\"").lower() for item in u.split()]
+
+    e_items = [x.lower() for x in expected_lit]
+    return u_items == e_items
+
+
 def _match_literals(user: str, expected: str) -> bool | None:
     """Match user answer against expected output as Python literals.
 
@@ -200,18 +237,23 @@ def _match_literals(user: str, expected: str) -> bool | None:
         True/False if both inputs are valid Python literals, None otherwise.
 
     """
-    u_lit = _try_parse_literal(user)
     e_lit = _try_parse_literal(expected)
-    if u_lit is None or e_lit is None:
+    if e_lit is None:
+        return None
+
+    if _match_unquoted_string_list(user, e_lit):
+        return True
+
+    u_lit = _try_parse_literal(user)
+    if u_lit is None:
         return None
 
     if isinstance(u_lit, (int, float)) and isinstance(e_lit, (int, float)):
         return _match_numeric(u_lit, e_lit, user)
 
-    if u_lit == e_lit:
-        return True
-
-    if isinstance(e_lit, list) and isinstance(u_lit, tuple) and list(u_lit) == e_lit:
+    if u_lit == e_lit or (
+        isinstance(e_lit, list) and isinstance(u_lit, tuple) and list(u_lit) == e_lit
+    ):
         return True
 
     return bool(isinstance(e_lit, list) and len(e_lit) == 1 and u_lit == e_lit[0])
