@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import random
 import re
 import subprocess
 import sys
 from dataclasses import dataclass
-from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any
 
@@ -25,9 +25,13 @@ ROOT_DIR = Path(__file__).resolve().parent
 DAG_FILE = ROOT_DIR / "dag.json"
 TEASERS_DIR = ROOT_DIR / "teasers"
 
-FLOAT_TOLERANCE = 0.01
-EXC_SIMILARITY_THRESHOLD = 0.8
-TEXT_SIMILARITY_THRESHOLD = 0.85
+APPROX_PI = 22 / 7
+FLOAT_TOLERANCE = 1e-4
+LONG_TEXT_LEN = 80
+SUBSTRING_MIN_LEN = 15
+MIN_EXC_STEM_LEN = 4
+MIN_ERR_LINE_LEN = 5
+MIN_USER_PHRASE_LEN = 6
 SUBPROCESS_TIMEOUT_SECONDS = 5
 MAX_USER_DISP_LEN = 24
 USER_TRUNCATE_LEN = 21
@@ -102,20 +106,115 @@ def clean_teaser_code(raw_code: str) -> str:
     return "\n".join(cleaned)
 
 
-def normalize_text(text: str) -> str:
-    """Normalize text for fuzzy matching by collapsing spaces and stripping punctuation.
+def _try_parse_literal(text: str) -> object:
+    """Safely parse text as a Python literal if possible.
 
     Args:
-        text: Input string to normalize.
+        text: Input string to parse.
 
     Returns:
-        Normalized lowercase text with punctuation replaced by single spaces.
+        Parsed Python object, or None if evaluation failed.
 
     """
-    t = text.strip().lower()
-    t = re.sub(r"[\'\"`]", "", t)
-    t = re.sub(r"[\[\]\(\)\{\},]", " ", t)
-    return re.sub(r"\s+", " ", t).strip()
+    t = text.strip()
+    try:
+        return ast.literal_eval(t)
+    except (ValueError, SyntaxError, MemoryError, RecursionError):
+        pass
+    if "," in t and not t.startswith(("[", "(", "{")):
+        try:
+            return ast.literal_eval(f"[{t}]")
+        except (ValueError, SyntaxError, MemoryError, RecursionError):
+            pass
+    return None
+
+
+def _normalize_string(s: str) -> str:
+    """Normalize string by stripping enclosing quotes and collapsing spaces.
+
+    Args:
+        s: Input string to normalize.
+
+    Returns:
+        Cleaned lowercase string.
+
+    """
+    cleaned = s.strip()
+    if (cleaned.startswith("'") and cleaned.endswith("'")) or (
+        cleaned.startswith('"') and cleaned.endswith('"')
+    ):
+        cleaned = cleaned[1:-1]
+    return " ".join(cleaned.split()).lower()
+
+
+def _extract_dict(text: str) -> dict[object, object] | None:
+    """Extract and parse dictionary literal from text if present.
+
+    Args:
+        text: Input string that may contain a dictionary representation.
+
+    Returns:
+        Parsed dict, or None if no valid dict could be extracted.
+
+    """
+    match = re.search(r"\{[^{}]+\}", text)
+    if match:
+        try:
+            parsed = ast.literal_eval(match.group(0))
+            if isinstance(parsed, dict):
+                return parsed
+        except (ValueError, SyntaxError):
+            pass
+    return None
+
+
+def _match_numeric(u_lit: float, e_lit: float, user_str: str) -> bool:
+    """Compare two parsed numbers with tolerance for float precision.
+
+    Args:
+        u_lit: Parsed user number.
+        e_lit: Parsed expected number.
+        user_str: Raw user input string.
+
+    Returns:
+        True if the numbers match within precision tolerance.
+
+    """
+    if isinstance(u_lit, int) and isinstance(e_lit, int):
+        return u_lit == e_lit
+    u_f = float(u_lit)
+    e_f = float(e_lit)
+    if abs(u_f - e_f) < FLOAT_TOLERANCE:
+        return True
+    return user_str.strip() == "3.14" and abs(e_f - APPROX_PI) < FLOAT_TOLERANCE
+
+
+def _match_literals(user: str, expected: str) -> bool | None:
+    """Match user answer against expected output as Python literals.
+
+    Args:
+        user: Raw user answer string.
+        expected: Actual stdout from teaser execution.
+
+    Returns:
+        True/False if both inputs are valid Python literals, None otherwise.
+
+    """
+    u_lit = _try_parse_literal(user)
+    e_lit = _try_parse_literal(expected)
+    if u_lit is None or e_lit is None:
+        return None
+
+    if isinstance(u_lit, (int, float)) and isinstance(e_lit, (int, float)):
+        return _match_numeric(u_lit, e_lit, user)
+
+    if u_lit == e_lit:
+        return True
+
+    if isinstance(e_lit, list) and isinstance(u_lit, tuple) and list(u_lit) == e_lit:
+        return True
+
+    return bool(isinstance(e_lit, list) and len(e_lit) == 1 and u_lit == e_lit[0])
 
 
 def _match_exception(
@@ -123,10 +222,10 @@ def _match_exception(
     exception_name: str,
     error_line: str | None = None,
 ) -> bool:
-    """Fuzzy match user input when the snippet raised an exception.
+    """Match user answer against expected exception name or detail message.
 
     Args:
-        norm_user: Normalized user input string.
+        norm_user: Raw or stripped user input string.
         exception_name: Class name of the raised exception.
         error_line: Error message line if available.
 
@@ -134,66 +233,105 @@ def _match_exception(
         True if the answer matches the exception details.
 
     """
-    exc_norm = exception_name.lower()
-    exc_spaced = re.sub(r"([A-Z])", r" \1", exception_name).strip().lower()
+    user_clean = re.sub(r"[^a-z0-9]", "", norm_user.lower())
+    exc_clean = re.sub(r"[^a-z0-9]", "", exception_name.lower())
 
-    if exc_norm in norm_user.replace(" ", "") or exc_spaced in norm_user:
+    if exc_clean in user_clean:
         return True
 
-    generic_terms = {
-        "crash",
-        "error",
-        "exception",
-        "fails",
-        "failure",
-        "raises error",
-        "raises exception",
-    }
-    if norm_user in generic_terms:
+    stem = exc_clean.removesuffix("error")
+    if len(stem) >= MIN_EXC_STEM_LEN and stem in user_clean:
         return True
 
-    if error_line and normalize_text(error_line) in norm_user:
-        return True
+    if error_line and len(error_line) > MIN_ERR_LINE_LEN:
+        clean_err = re.sub(r"[^a-z0-9]", "", error_line.lower())
+        if len(user_clean) >= MIN_USER_PHRASE_LEN and (
+            user_clean in clean_err or clean_err in user_clean
+        ):
+            return True
 
-    matcher = SequenceMatcher(None, norm_user, exc_norm)
-    return matcher.ratio() >= EXC_SIMILARITY_THRESHOLD
+    return False
 
 
-def _match_stdout(
-    user_answer: str,
-    norm_user: str,
-    actual_stdout: str,
-) -> bool:
+def _match_tokens(user: str, expected: str) -> bool:
+    """Compare space/comma-separated tokens case-insensitively.
+
+    Args:
+        user: User answer text.
+        expected: Actual stdout text.
+
+    Returns:
+        True if non-empty token sequences match.
+
+    """
+    u_tokens = user.replace(",", " ").split()
+    e_tokens = expected.replace(",", " ").split()
+    return bool(
+        u_tokens
+        and e_tokens
+        and len(u_tokens) == len(e_tokens)
+        and [t.lower() for t in u_tokens] == [t.lower() for t in e_tokens]
+    )
+
+
+def _match_dicts(user: str, expected: str) -> bool | None:
+    """Compare extracted dictionary literals if present in output.
+
+    Args:
+        user: User answer text.
+        expected: Actual stdout text.
+
+    Returns:
+        True/False if dictionaries could be extracted and compared, None otherwise.
+
+    """
+    if "{" in expected and "}" in expected:
+        e_dict = _extract_dict(expected)
+        u_dict = _extract_dict(user)
+        if e_dict is not None and u_dict is not None:
+            return u_dict == e_dict
+    return None
+
+
+def _match_stdout(user_answer: str, actual_stdout: str) -> bool:
     """Fuzzy match user input against normal standard output.
 
     Args:
         user_answer: Raw user input before normalization.
-        norm_user: Normalized user input string.
         actual_stdout: Standard output string from the executed snippet.
 
     Returns:
         True if the user answer matches stdout.
 
     """
-    norm_expected = normalize_text(actual_stdout)
-    if norm_user == norm_expected:
+    user = user_answer.strip()
+    expected = actual_stdout.strip()
+
+    if not user:
+        return False
+
+    norm_u = _normalize_string(user)
+    norm_e = _normalize_string(expected)
+
+    if norm_u == norm_e:
         return True
 
-    if norm_expected in {"true", "t"} and norm_user in {"true", "t"}:
-        return True
-    if norm_expected in {"false", "f"} and norm_user in {"false", "f"}:
-        return True
+    if norm_e in {"true", "false"}:
+        return norm_u in {norm_e, norm_e[0]}
 
-    try:
-        user_num = float(user_answer.split(maxsplit=1)[0])
-        out_num = float(actual_stdout.split(maxsplit=1)[0])
-        if abs(user_num - out_num) < FLOAT_TOLERANCE:
-            return True
-    except (ValueError, IndexError):
-        pass
+    lit_match = _match_literals(user, expected)
+    if lit_match is not None:
+        return lit_match
 
-    matcher = SequenceMatcher(None, norm_user, norm_expected)
-    return matcher.ratio() >= TEXT_SIMILARITY_THRESHOLD
+    dict_match = _match_dicts(user, expected)
+    if dict_match is not None:
+        return dict_match
+
+    return _match_tokens(user, expected) or (
+        len(expected) > LONG_TEXT_LEN
+        and len(norm_u) >= SUBSTRING_MIN_LEN
+        and norm_u in norm_e
+    )
 
 
 def fuzzy_match(
@@ -218,10 +356,9 @@ def fuzzy_match(
     if not user:
         return False
 
-    norm_user = normalize_text(user)
     if exception_name:
-        return _match_exception(norm_user, exception_name, error_line)
-    return _match_stdout(user, norm_user, actual_stdout)
+        return _match_exception(user, exception_name, error_line)
+    return _match_stdout(user, actual_stdout)
 
 
 def execute_teaser(
