@@ -1,0 +1,1 @@
+"""Python brain teasers package."""

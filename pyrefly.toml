@@ -1,0 +1,4 @@
+enabled-ignores      = ["pyrefly"]
+infer-with-first-use = false
+preset               = "strict"
+python-version       = "3.12.0"

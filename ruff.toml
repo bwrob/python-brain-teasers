@@ -1,0 +1,29 @@
+exclude        = [".venv*", "site", "dist"]
+line-length    = 88
+target-version = "py312"
+
+[lint]
+    future-annotations = true
+    ignore = [
+        "blank-line-before-class",
+        "incorrect-blank-line-before-class",
+        "missing-copyright-notice",
+        "missing-trailing-comma",
+        "multi-line-summary-second-line",
+        "runtime-cast-value",
+    ]
+    preview = true
+    select = ["ALL"]
+
+    [lint.flake8-type-checking]
+        exempt-modules = ["collections.abc", "types", "typing", "typing_extensions"]
+
+    [lint.per-file-ignores]
+        # Brain teaser snippets print output, use dynamic types, and do not require library docstrings.
+        "teasers/*" = [
+            "any-type",
+            "assert",
+            "D",
+            "DOC",
+            "print",
+        ]
