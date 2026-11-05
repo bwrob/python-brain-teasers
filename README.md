@@ -10,7 +10,9 @@ The files are sorted in learning order using a directed acyclic graph (DAG) save
 
 ### Interactive Terminal Quiz
 
-Test your Python intuition with an interactive terminal quiz. It shows snippets one by one, fuzzy-matches your answers against runtime output, and tallies your final score.
+Test your Python intuition with an interactive terminal quiz. It shows snippets one by one, fuzzy-matches your answers against runtime output, and tallies your final score. After each attempt, a concise explanation reveals the underlying Python mechanic.
+
+Type `h` at the prompt for a concept hint, `s` to skip, or `q` to quit.
 
 On any failed attempt, an interactive IPython terminal opens automatically with the teaser's code pre-executed so you can inspect variables and explore behavior. Type `exit` or press `Ctrl+D` to return to the quiz.
 

@@ -60,7 +60,8 @@
         "round.py",
         "identity.py",
         "add.py"
-      ]
+      ],
+      "explanation": "Floating-point numbers in binary cannot store 1.1 exactly, causing small precision artifacts in arithmetic."
     },
     {
       "order": 2,
@@ -74,7 +75,8 @@
         "mul.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Python uses round-half-to-even (banker's rounding), so both 1.5 and 2.5 round to the nearest even number 2."
     },
     {
       "order": 3,
@@ -92,7 +94,8 @@
         "pi.py",
         "timer.py",
         "future.py"
-      ]
+      ],
+      "explanation": "The 'or' operator short-circuits on the first true operand, so the division by zero is never reached."
     },
     {
       "order": 4,
@@ -106,7 +109,8 @@
         "div.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Python 3 allows Unicode characters like π as variable names. It does not automatically equal math.pi."
     },
     {
       "order": 5,
@@ -120,7 +124,8 @@
       ],
       "dependents_original": [
         "escape.py"
-      ]
+      ],
+      "explanation": "Combining characters count as separate code points. Here the letter and the accent are distinct Unicode characters."
     },
     {
       "order": 6,
@@ -142,7 +147,8 @@
         "winpath.py",
         "vote.py",
         "email.py"
-      ]
+      ],
+      "explanation": "Python supports hexadecimal (\\x), 16-bit (\\u), 32-bit (\\U), and named (\\N) escape sequences."
     },
     {
       "order": 7,
@@ -160,7 +166,8 @@
       ],
       "dependents_original": [
         "vote.py"
-      ]
+      ],
+      "explanation": "Only valid escape sequences like \\n or \\t are transformed. Unknown escapes like \\p remain literal backslashes."
     },
     {
       "order": 8,
@@ -180,7 +187,8 @@
         "colors.py",
         "add.py",
         "assign.py"
-      ]
+      ],
+      "explanation": "A slice step of -1 reverses the string. Punctuation and case remain in place relative to the reversed letters."
     },
     {
       "order": 9,
@@ -194,7 +202,8 @@
         "cat.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "The 'in' operator checks for substring membership, returning True which satisfies the if-statement."
     },
     {
       "order": 10,
@@ -208,7 +217,8 @@
         "cat.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Adjacent string literals separated only by whitespace automatically concatenate into a single string."
     },
     {
       "order": 11,
@@ -226,7 +236,8 @@
       ],
       "dependents_original": [
         "tasks.py"
-      ]
+      ],
+      "explanation": "CPython optimizes memory by reusing identical immutable constants (like small tuples) in bytecode."
     },
     {
       "order": 12,
@@ -250,7 +261,8 @@
         "word_freq.py",
         "scope.py",
         "metrics.py"
-      ]
+      ],
+      "explanation": "The '+' operator concatenates strings rather than adding them numerically, regardless of type annotations."
     },
     {
       "order": 13,
@@ -278,7 +290,8 @@
         "player.py",
         "eval.py",
         "metrics_box.py"
-      ]
+      ],
+      "explanation": "Slice assignment replaces the sliced slice with all elements from the iterable, resizing the list in place."
     },
     {
       "order": 14,
@@ -292,7 +305,8 @@
         "assign.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Assignment targets unpack left to right: avengers[3] is evaluated using the original index before idx changes."
     },
     {
       "order": 15,
@@ -306,7 +320,8 @@
         "assign.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "For lists, '+=' calls extend() in place, appending elements from the iterable rather than nesting a list."
     },
     {
       "order": 16,
@@ -320,7 +335,8 @@
         "identity.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "When priority numbers match, heapq compares the next tuple element. Strings and ints cannot be compared with <."
     },
     {
       "order": 17,
@@ -338,7 +354,8 @@
       ],
       "dependents_original": [
         "loop.py"
-      ]
+      ],
+      "explanation": "The generator is consumed by the first sorted() call, leaving an empty iterator for the second call."
     },
     {
       "order": 18,
@@ -360,7 +377,8 @@
         "loop_internal.py",
         "buttons.py",
         "printer.py"
-      ]
+      ],
+      "explanation": "Loop variables do not have their own local scope in Python and stay bound after the loop ends."
     },
     {
       "order": 19,
@@ -374,7 +392,8 @@
         "loop.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "For-loops advance the iterator each cycle. Calling next() inside the body skips elements."
     },
     {
       "order": 20,
@@ -392,7 +411,8 @@
       ],
       "dependents_original": [
         "word_freq_none.py"
-      ]
+      ],
+      "explanation": "Default arguments are evaluated once at definition time, so all calls share and mutate the same dictionary."
     },
     {
       "order": 21,
@@ -406,7 +426,8 @@
         "word_freq.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Using None as a default argument creates a brand new dictionary on each call when freqs is omitted."
     },
     {
       "order": 22,
@@ -430,7 +451,8 @@
         "buttons_make.py",
         "player.py",
         "metrics.py"
-      ]
+      ],
+      "explanation": "Names are resolved using LEGB scope order, looking in enclosing function scopes before the global scope."
     },
     {
       "order": 23,
@@ -452,7 +474,8 @@
       "dependents_original": [
         "buttons_default.py",
         "buttons_make.py"
-      ]
+      ],
+      "explanation": "Closures bind variables by reference. All lambdas look up the final value of i after the loop finishes."
     },
     {
       "order": 24,
@@ -466,7 +489,8 @@
         "buttons.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Default parameter values are evaluated when each lambda is defined, locking in the loop variable value."
     },
     {
       "order": 25,
@@ -482,7 +506,8 @@
         "buttons.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Calling a helper function creates a fresh scope with its own argument variable for each button."
     },
     {
       "order": 26,
@@ -508,7 +533,8 @@
         "get_attr.py",
         "timer.py",
         "jury.py"
-      ]
+      ],
+      "explanation": "Assigning to self.score creates an instance attribute that shadows, but does not change, the class attribute."
     },
     {
       "order": 27,
@@ -526,7 +552,8 @@
       ],
       "dependents_original": [
         "seeker.py"
-      ]
+      ],
+      "explanation": "Two leading underscores trigger name mangling (_User__id), preventing direct access as self.__id."
     },
     {
       "order": 28,
@@ -544,7 +571,8 @@
       ],
       "dependents_original": [
         "get_attr.py"
-      ]
+      ],
+      "explanation": "Accessing self.__dict__ inside __getattribute__ invokes __getattribute__ again, causing infinite recursion."
     },
     {
       "order": 29,
@@ -560,7 +588,8 @@
         "seeker.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "__getattr__ is a fallback that is only called when normal attribute lookup on the instance and class fails."
     },
     {
       "order": 30,
@@ -576,7 +605,8 @@
         "player.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "When a context manager __exit__ method returns a truthy value, Python suppresses the raised exception."
     },
     {
       "order": 31,
@@ -592,7 +622,8 @@
         "winpath.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Regular expressions use greedy matching by default, consuming as many characters as possible before backtracking."
     },
     {
       "order": 32,
@@ -606,7 +637,8 @@
         "assign.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "eval() accepts only expressions that evaluate to a value. Statements like variable assignment raise SyntaxError."
     },
     {
       "order": 33,
@@ -620,7 +652,8 @@
         "div.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Python datetime.MAXYEAR is 9999. Year 10000 exceeds the maximum allowed year and raises ValueError."
     },
     {
       "order": 34,
@@ -634,7 +667,8 @@
         "escape.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Naming a file email.py shadows the standard library email package, causing circular import errors."
     },
     {
       "order": 35,
@@ -656,7 +690,8 @@
       "dependents_original": [
         "metrics_nl.py",
         "metrics_box.py"
-      ]
+      ],
+      "explanation": "Assigning to a variable inside a function marks it as local, so reading it first raises UnboundLocalError."
     },
     {
       "order": 36,
@@ -670,7 +705,8 @@
         "metrics.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "The 'nonlocal' keyword allows an inner function to rebind a variable in an enclosing outer function."
     },
     {
       "order": 37,
@@ -686,7 +722,8 @@
         "metrics.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Mutating an element inside a list changes its contents in place without rebinding the list variable."
     },
     {
       "order": 38,
@@ -706,7 +743,8 @@
       "dependents_original": [
         "printer_join.py",
         "jury.py"
-      ]
+      ],
+      "explanation": "Daemon threads terminate immediately when the main thread finishes without waiting for them to complete."
     },
     {
       "order": 39,
@@ -720,7 +758,8 @@
         "printer.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Calling thread.join() blocks the main thread until the worker thread has completely finished executing."
     },
     {
       "order": 40,
@@ -736,7 +775,8 @@
         "printer.py"
       ],
       "dependents": [],
-      "dependents_original": []
+      "dependents_original": [],
+      "explanation": "Processes have separate memory spaces. Mutating a global variable in a worker process does not affect the parent."
     }
   ]
 }

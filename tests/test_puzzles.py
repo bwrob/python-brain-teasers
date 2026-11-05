@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from quiz import fuzzy_match
+from quiz import fuzzy_match, load_teasers
 
 
 def _assert_answers(
@@ -1047,3 +1047,11 @@ def test_puzzle_40_jury() -> None:
             "[0]",
         ],
     )
+
+
+def test_all_puzzles_have_explanations() -> None:
+    teasers = load_teasers()
+    assert len(teasers) == 40
+    for t in teasers:
+        assert t.explanation, f"Puzzle {t.order} ({t.filename}) missing explanation"
+        assert len(t.explanation) > 15

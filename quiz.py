@@ -50,6 +50,7 @@ class TeaserItem:
     filename: str
     concept: str
     code_path: Path
+    explanation: str = ""
 
 
 @dataclass
@@ -501,6 +502,7 @@ def load_teasers() -> list[TeaserItem]:
                 filename=filename,
                 concept=node["concept"],
                 code_path=TEASERS_DIR / filename,
+                explanation=node.get("explanation", ""),
             )
         )
     return items
@@ -545,7 +547,10 @@ def _display_teaser_panel(
         Panel(
             syntax,
             title=title,
-            subtitle="[dim]Type your answer, 's' to skip, or 'q' to quit[/dim]",
+            subtitle=(
+                "[dim]Type your answer, 'h' for hint, "
+                "'s' to skip, or 'q' to quit[/dim]"
+            ),
             border_style="blue",
         )
     )
@@ -574,11 +579,18 @@ def _evaluate_attempt(
     else:
         actual_display = stdout or "<empty output>"
 
+    why_text = (
+        f"\n\n[bold cyan]Why:[/bold cyan] {teaser.explanation}"
+        if teaser.explanation
+        else ""
+    )
+
     if cleaned_input.lower() in {"s", "skip"}:
         CONSOLE.print(
             Panel(
                 f"[bold yellow]⤼ Skipped[/bold yellow]\n\n"
-                f"[bold]Actual Output:[/bold]\n{actual_display}",
+                f"[bold]Actual Output:[/bold]\n{actual_display}"
+                f"{why_text}",
                 border_style="yellow",
             )
         )
@@ -589,7 +601,8 @@ def _evaluate_attempt(
         CONSOLE.print(
             Panel(
                 f"[bold green]✓ Correct![/bold green]\n\n"
-                f"[bold]Actual Output:[/bold]\n{actual_display}",
+                f"[bold]Actual Output:[/bold]\n{actual_display}"
+                f"{why_text}",
                 border_style="green",
             )
         )
@@ -599,7 +612,8 @@ def _evaluate_attempt(
         Panel(
             f"[bold red]✗ Not quite![/bold red]\n\n"
             f"[bold]Your Answer:[/bold] {cleaned_input}\n"
-            f"[bold]Actual Output:[/bold] {actual_display}",
+            f"[bold]Actual Output:[/bold] {actual_display}"
+            f"{why_text}",
             border_style="red",
         )
     )
@@ -667,6 +681,34 @@ def _wait_for_next(*, is_last: bool) -> bool:
         return True
 
 
+def _prompt_user_answer(teaser: TeaserItem) -> str:
+    """Prompt user for answer, supporting hints.
+
+    Args:
+        teaser: Teaser puzzle item being attempted.
+
+    Returns:
+        User's stripped answer string, or 'q' on interrupt.
+
+    """
+    prompt_text = "[bold yellow]What will Python output?[/bold yellow]"
+    while True:
+        try:
+            user_input = Prompt.ask(prompt_text)
+        except (KeyboardInterrupt, EOFError):
+            CONSOLE.print("\n[yellow]Quiz interrupted by user.[/yellow]")
+            return "q"
+
+        cleaned = user_input.strip()
+        if cleaned.lower() in {"h", "hint"}:
+            CONSOLE.print(
+                f"[bold cyan]💡 Hint:[/bold cyan] "
+                f"[dim]Focus on {teaser.concept.lower()}.[/dim]\n"
+            )
+            continue
+        return cleaned
+
+
 def run_quiz(
     teasers: list[TeaserItem],
     *,
@@ -719,14 +761,7 @@ def run_quiz(
 
         _display_teaser_panel(teaser, idx, total, score, len(results))
 
-        try:
-            prompt_text = "[bold yellow]What will Python output?[/bold yellow]"
-            user_input = Prompt.ask(prompt_text)
-        except (KeyboardInterrupt, EOFError):
-            CONSOLE.print("\n[yellow]Quiz interrupted by user.[/yellow]")
-            break
-
-        cleaned_input = user_input.strip()
+        cleaned_input = _prompt_user_answer(teaser)
         if cleaned_input.lower() in {"q", "quit", "exit"}:
             CONSOLE.clear()
             break
